@@ -1,0 +1,63 @@
+Shortcuts - Customized Shortcuts
+
+Shortcut scripts, and intent filters
+Web shortcuts from favicon
+
+Shortcut is:
+    Name
+    Icon
+    Intent
+    Action      VIEW, EDIT, DIAL, CALL, SEND, SENDTO, ANSWER, RUN, PICK_ACTIVITY, SEARCH, WEB_SEARCH
+    Uri         tel: smsto:// mailto:// content:// file:// http:// geo: voicemail: im://
+    Package         
+
+Filter is:
+    Action
+    Category
+    Uri (type, scheme, authority, path)
+    Priority
+
+Builtin Filters:
+    SMS Received
+    Phone State     (new voicemail, signal strength, call state, traffic)
+    Boot 
+    Battery Status  
+    Gps Location
+    Audio Service
+    Alarm Manager
+    Storage monitor
+    Mount service
+    Wifi
+    Wallpaper
+    internal/telephony/gsm/SMSDispatcher?
+
+
+
+Builtin Intents:
+    Vibrate
+    Play media
+    Play dtmf
+    Wakelock
+    Battery status
+    Flashlight
+    Create notification
+    Delayed intent
+    System Settings:
+        Ringer mode
+        Bluetooth On/Discoverable
+        GPS
+        WIFI
+        3G
+        Airplane
+        Data Roaming
+        Autolock
+        Sound Effects
+        Stay on while plugged in
+        12/24hr
+        Wifi Available
+        Debug
+        Set default ringtone/notification
+        Set screen brightness
+        Set channel volume 
+        mute channel
+    

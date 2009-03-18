@@ -19,7 +19,9 @@ public class Shortcuts extends Activity
         i.setAction(Intent.ACTION_MAIN);
         i.addCategory(Intent.CATEGORY_LAUNCHER);
         i.setDataAndType(Uri.parse("foo://foobar/baz/quux"), "text/plain");
-        i.putExtra("FOO", "bar");
+        i.putExtra("FOO", (byte)42);
+        i.putExtra("BAR", 42L);
+        i.putExtra("foobar", new String[] {"foo","bar","baz"});
 
         android.util.Log.v("shorcuts/intent", i.toString());
 

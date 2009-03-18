@@ -89,7 +89,7 @@ public class ShortcutScripts
     private Intent mIntent;
     private enum State { NONE, EXTRAS, CATEGORIES, READING_EXTRA };
     private State mState;
-    private String mExtraName;
+    private String mExtraName,mExtraType;
 
     public IntentXMLHandler() { mState = State.NONE; mIntent = new Intent(); }
     public Intent getIntent() { return mIntent; }
@@ -134,6 +134,7 @@ public class ShortcutScripts
     private void startElement_EXTRAS(String uri, String name, String qName, Attributes attrs) {
       if (name.equals("extra")) {
         mExtraName = attrs.getValue("name");
+        mExtraType = attrs.getValue("type");
       }
     }
     private void startElement_CATEGORIES(String uri, String name, String qName, Attributes attrs) {
@@ -155,7 +156,21 @@ public class ShortcutScripts
     public void characters(char ch[], int start, int length) 
     {
       if (mState == State.EXTRAS && mExtraName != null) {
-        android.util.Log.v("shortcuts/characters", new String(ch, start,length));
+        String chars = new String(ch, start,length);
+        android.util.Log.v("shortcuts/characters", chars);
+        try {
+          Class cls = Class.forName(mExtraType);
+          if (cls.equals(java.lang.String.class)) mIntent.putExtra(mExtraName, chars);
+          if (cls.equals(java.lang.Integer.class)) mIntent.putExtra(mExtraName, Integer.decode(chars));
+          if (cls.equals(java.lang.Long.class)) mIntent.putExtra(mExtraName, Long.decode(chars));
+          if (cls.equals(java.lang.Boolean.class)) mIntent.putExtra(mExtraName, Boolean.getBoolean(chars));
+          if (cls.equals(java.lang.Double.class)) mIntent.putExtra(mExtraName, Double.parseDouble(chars));
+          if (cls.equals(java.lang.Float.class)) mIntent.putExtra(mExtraName, Float.parseFloat(chars));
+          if (cls.equals(java.lang.Short.class)) mIntent.putExtra(mExtraName, Short.parseShort(chars));
+          if (cls.equals(java.lang.Byte.class)) mIntent.putExtra(mExtraName, Byte.parseByte(chars));
+        } catch (java.lang.ClassNotFoundException e) {
+          android.util.Log.v("shortcuts/characters", "class not found: "+mExtraType);
+        }
       }
     }
   }

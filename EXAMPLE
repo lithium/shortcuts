@@ -1,0 +1,32 @@
+
+<filter id="@id/lowbat-filter">
+    <intent-filter>
+        <action name="android.intent.action.BATTERY_LOW"/>
+    </intent-filter>
+    <intent>
+        <action name="VIBRATE"/>
+        <extras><extra name="VIBRATE_PATTERN">250:100,250:100</extra></extras>
+    </intent>
+    <script id="@id/conserve_battery"/>
+</filter>
+
+
+<script id="@id/conserve_battery">
+    <intent id="@id/dim_screen"/>
+    <intent id="@id/gps_off"/>
+</script>
+
+<intent id="@id/dim_screen">
+    <action name="SCREEN_BRIGHTNESS"/>
+    <extras>
+        <extra name="SCREEN_BRIGHTNESS_PERCENT">10</extra>
+    </extras>
+</intent>
+
+<intent id="@id/gps_off">
+    <action name="GPS"/>
+    <extras>
+        <extra name="GPS_ENABLED">false</extra>
+    </extras>
+</intent>
+

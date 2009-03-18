@@ -19,7 +19,7 @@ import java.io.StringReader;
 
 
 
-public class ShortcutScripts 
+public class Shortcut 
 {
 
   public static String intentToXml(Intent i)
@@ -181,7 +181,7 @@ public class ShortcutScripts
       SAXParserFactory factory = SAXParserFactory.newInstance();
       SAXParser parser = factory.newSAXParser();
       XMLReader reader = parser.getXMLReader();
-      IntentXMLHandler handler = new ShortcutScripts.IntentXMLHandler();
+      IntentXMLHandler handler = new Shortcut.IntentXMLHandler();
       reader.setContentHandler(handler);
       reader.parse(new InputSource(new StringReader(xml_string)));
       return handler.getIntent();

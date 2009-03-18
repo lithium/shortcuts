@@ -15,6 +15,7 @@ public class Shortcuts extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        /*
         Intent i = new Intent(this, Shortcuts.class);
         i.setAction(Intent.ACTION_MAIN);
         i.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -25,11 +26,17 @@ public class Shortcuts extends Activity
 
         android.util.Log.v("shorcuts/intent", i.toString());
 
-        String str = ShortcutScripts.intentToXml(i);
+        String str = Shortcut.intentToXml(i);
         android.util.Log.v("shorcuts/toXML", str);
 
-        Intent intent = ShortcutScripts.xmlToIntent(str);
+        Intent intent = Shortcut.xmlToIntent(str);
         android.util.Log.v("shorcuts/toIntent", intent.toString());
+*/
+
+        Intent i = new Intent("com.hlidskialf.android.shortcuts.builtin.VOLUME");
+        i.putExtra("com.hlidskialf.android.shortcuts.builtin.VOLUME_STREAM", "volume_ring"); 
+        i.putExtra("com.hlidskialf.android.shortcuts.builtin.VOLUME_VALUE", 4);
+        sendBroadcast(i);
 
     }
 }

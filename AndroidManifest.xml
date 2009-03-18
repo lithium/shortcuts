@@ -11,5 +11,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".BuiltinShortcutReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="com.hlidskialf.android.shortcuts.builtin.VIBRATE"/>
+                <action android:name="com.hlidskialf.android.shortcuts.builtin.VOLUME"/>
+                <action android:name="com.hlidskialf.android.shortcuts.builtin.BRIGHTNESS"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.hlidskialf.android.shortcuts.builtin.MEDIA_PLAYER"/>
+                <data android:mimeType="audio/*"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 </manifest> 

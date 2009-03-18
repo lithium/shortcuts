@@ -33,9 +33,10 @@ public class Shortcuts extends Activity
         android.util.Log.v("shorcuts/toIntent", intent.toString());
 */
 
-        Intent i = new Intent("com.hlidskialf.android.shortcuts.builtin.VOLUME");
-        i.putExtra("com.hlidskialf.android.shortcuts.builtin.VOLUME_STREAM", "volume_ring"); 
-        i.putExtra("com.hlidskialf.android.shortcuts.builtin.VOLUME_VALUE", 4);
+        Intent i = new Intent(Shortcut.ACTION_STREAM_VOLUME);
+        i.putExtra(Shortcut.EXTRA_STREAM, Shortcut.STREAM_RING);
+        i.putExtra(Shortcut.EXTRA_VOLUME, 10);
+        i.putExtra(Shortcut.EXTRA_SHOW_UI, true);
         sendBroadcast(i);
 
     }

@@ -14,11 +14,14 @@ public class BuiltinShortcutReceiver extends BroadcastReceiver
         mContext = context;
         mIntent = intent; 
 
-        String xml = Shortcut.intentToXml(mIntent);
+        String xml = XmlShortcuts.intentToXml(mIntent);
         android.util.Log.v("shortcuts/toXml", xml);
 
-        Intent i = Shortcut.xmlToIntent(xml);
+        Intent i = XmlShortcuts.xmlToIntent(xml);
         android.util.Log.v("shortcuts/toIntent", i.toString());
+        
+        xml = XmlShortcuts.intentToXml(mIntent);
+        android.util.Log.v("shortcuts/toXml", xml);
 
     }
 }

@@ -5,28 +5,44 @@
     </intent-filter>
     <intent>
         <action name="VIBRATE"/>
-        <extras><extra name="VIBRATE_PATTERN">250:100,250:100</extra></extras>
+        <extra name="VIBRATE_PATTERN">250:100,250:100</extra>
     </intent>
-    <script id="@id/conserve_battery"/>
+    <shortcut id="@id/conserve_battery"/>
 </filter>
 
 
-<script id="@id/conserve_battery">
+<shortcut id="@+id/conserve_battery">
     <intent id="@id/dim_screen"/>
     <intent id="@id/gps_off"/>
-</script>
+</shortcut>
 
-<intent id="@id/dim_screen">
+<intent id="@+id/dim_screen">
     <action name="SCREEN_BRIGHTNESS"/>
-    <extras>
-        <extra name="SCREEN_BRIGHTNESS_PERCENT">10</extra>
-    </extras>
+    <extra name="SCREEN_BRIGHTNESS_PERCENT">10</extra>
 </intent>
 
-<intent id="@id/gps_off">
+<intent id="@+id/gps_off">
     <action name="GPS"/>
-    <extras>
-        <extra name="GPS_ENABLED">false</extra>
-    </extras>
+    <extra name="GPS_ENABLED">false</extra>
 </intent>
 
+
+<shortcut name="Low Volume" icon="@android:drawable/ic_menu_foo">
+    <intent>
+        <action name="com.hlidskialf.android.shortcuts.action.STREAM_VOLUME"/>
+        <extra name="com.hlidskialf.android.shortcuts.extra.STREAM">stream_system</extra>
+        <extra name="com.hlidskialf.android.shortcuts.extra.VOLUME">10</extra>
+    </intent>
+    <intent>
+        <action name="STREAM_VOLUME"/>
+        <extra name="STREAM">stream_ring</extra> <extra name="VOLUME">10</extra>
+    </intent>
+    <intent>
+        <action name="STREAM_VOLUME"/>
+        <extra name="STREAM">stream_music</extra> <extra name="VOLUME">10</extra>
+    </intent>
+    <intent>
+        <action name="STREAM_VOLUME"/>
+        <extra name="STREAM">stream_alarm</extra> <extra name="VOLUME">10</extra>
+    </intent>
+</shortcut>

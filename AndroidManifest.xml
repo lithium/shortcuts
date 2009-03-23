@@ -3,6 +3,11 @@
       package="com.hlidskialf.android.shortcuts"
       android:versionCode="1"
       android:versionName="1.0">
+
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application android:label="@string/app_name">
         <activity android:name=".Shortcuts"
                   android:label="@string/app_name">
@@ -14,7 +19,25 @@
 
         <receiver android:name=".BuiltinShortcutReceiver" android:exported="false">
             <intent-filter>
+                <action android:name="com.hlidskialf.android.shortcuts.action.VIBRATE"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.PLAY_MEDIA"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.FLASHLIGHT"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.NOTIFICATION"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.TOAST"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.RINGER_MODE"/>
                 <action android:name="com.hlidskialf.android.shortcuts.action.STREAM_VOLUME"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.STREAM_MUTE"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.STREAM_SOLO"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.SPEAKERPHONE"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.RINGER_VIBRATE"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.NOTIFY_VIBRATE"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.PLAY_SOUND_EFFECT"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.GPS_ENABLE"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.3G_ENABLE"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.WIFI_ENABLE"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.WIFI_CONNECTION"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.WIFI_SCAN"/>
+                <action android:name="com.hlidskialf.android.shortcuts.action.SYSTEM_SETTING"/>
             </intent-filter>
         </receiver>
 

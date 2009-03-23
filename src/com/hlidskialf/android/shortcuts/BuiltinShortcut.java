@@ -9,6 +9,8 @@ import android.content.Context;
 import android.location.LocationManager;
 import android.provider.Settings;
 
+import java.lang.reflect.Method;
+
 public class BuiltinShortcut {
   public static final String EXTRA_ONOFF="com.hlidskialf.android.shortcuts.extra.ONOFF";
   public static final String ON="on";
@@ -183,9 +185,44 @@ public class BuiltinShortcut {
     }
   }
 
-  public static final String ACTION_3G="com.hlidskialf.android.shortcuts.action.3G";
+  public static final String ACTION_3G_ENABLE="com.hlidskialf.android.shortcuts.action.3G_ENABLE";
   public static class Mobile
   {
+    // Yanked from frameworks/base/telephony/java/com/android/internal/telephony/Phone.java
+    static final int NT_AUTO_TYPE  = 0;  //   WCDMA preferred (auto mode)
+    static final int NT_GSM_TYPE   = 1;  //   GSM only
+    static final int NT_WCDMA_TYPE = 2;  //   WCDMA only
+
+    public static void enable3G(Context ctx, Intent intent)
+    {
+      String state = intent.getStringExtra(BuiltinShortcut.EXTRA_ONOFF);
+      int networkType = BuiltinShortcut.onoff_toggle(state, true) ? Mobile.NT_WCDMA_TYPE : Mobile.NT_GSM_TYPE;
+
+      try {
+        Class cls_factory = Class.forName("com.android.internal.telephony.PhoneFactory");
+        Method makeDefaultPhones = cls_factory.getDeclaredMethod("makeDefaultPhones", new Class[] {Context.class});
+        makeDefaultPhones.invoke(null,new Object[] {ctx});
+        Method getDefaultPhone = cls_factory.getDeclaredMethod("getDefaultPhone", new Class[] {});
+        Object phone = getDefaultPhone.invoke(null, (Object[]) null);
+
+        Class cls_phone = Class.forName("com.android.internal.telephony.Phone");
+        Method setPreferredNetworkType = cls_phone.getDeclaredMethod("setPreferredNetworkType", new Class[] {Integer.class, android.os.Message.class}); 
+        setPreferredNetworkType.invoke(phone, new Object[] {networkType, null});
+        
+        /*
+      } catch (java.lang.ClassNotFoundException e) {
+      } catch (java.lang.NoSuchMethodException e) {
+      } catch (java.lang.IllegalAccessException e) {
+      }
+      */
+      } catch (java.lang.reflect.InvocationTargetException e) {
+        android.util.Log.v("invocationrelfection", e.getTargetException().toString());
+        e.getTargetException().printStackTrace();
+      } catch (Exception e) {
+        android.util.Log.v("3gtoggle","reflection failed! " + e.toString());
+      }
+
+    }
   }
 
   public static final String ACTION_WIFI_ENABLE="com.hlidskialf.android.shortcuts.action.WIFI_ENABLE";
@@ -213,18 +250,59 @@ public class BuiltinShortcut {
     }
   }
 
+  public static final String EXTRA_BLUETOOTH="bluetooth";
+  public static final String EXTRA_BLUETOOTH_DISCOVERABLE="bluetooth_discover";
 
   /* Settings.System */
-  public static final String ACTION_SETTINGS="com.hlidskialf.android.shortcuts.action.SETTINGS";
-  public static final String EXTRA_AIRPLANE_MODE="com.hlidskialf.android.shortcuts.extra.AIRPLANE_MODE";
-  public static final String EXTRA_DATA_ROAMING="com.hlidskialf.android.shortcuts.extra.DATA_ROAMING";
-  public static final String EXTRA_LOCK_PATTERN_ENABLED="com.hlidskialf.android.shortcuts.extra.LOCK_PATTERN_ENABLED";
-  public static final String EXTRA_ON_WHILE_PLUGGED="com.hlidskialf.android.shortcuts.extra.ON_WHILE_PLUGGED";
-  public static final String EXTRA_USB_DEBUG="com.hlidskialf.android.shortcuts.extra.USB_DEBUG";
-  public static final String EXTRA_DIM_SCREEN="com.hlidskialf.android.shortcuts.extra.DIM_SCREEN";
-  public static final String EXTRA_RINGTONE="com.hlidskialf.android.shortcuts.extra.RINGTONE";
-  public static final String EXTRA_NOTIFICATION="com.hlidskialf.android.shortcuts.extra.NOTIFICATION";
+  public static final String ACTION_SYSTEM_SETTING="com.hlidskialf.android.shortcuts.action.SYSTEM_SETTING";
+  public static final String EXTRA_SETTING="com.hlidskialf.android.shortcuts.extra.SETTING";
+  public static final String EXTRA_VALUE="com.hlidskialf.android.shortcuts.extra.VALUE";
 
-  public static final String ACTION_BLUETOOTH="com.hlidskialf.android.shortcuts.action.BLUETOOTH";
+  public static final String SETTING_AIRPLANE_MODE="airplane_mode";
+  public static final String SETTING_DEBUG_MODE="debug_mode";
+  public static final String SETTING_DATA_ROAMING="data_roaming";
+  public static final String SETTING_DIM_SCREEN="dim_screen";
+  public static final String SETTING_DTMF_TONE="dtmf_tone";
+  public static final String SETTING_LOCK_PATTERN="lock_pattern";
+  public static final String SETTING_SHOW_PROCESSES="show_processes";
+  public static final String SETTING_SOUND_EFFECTS="sound_effects";
+  public static final String SETTING_STAY_ON_WHILE_PLUGGED_IN="stay_on_while_plugged_in";
+  public static final String SETTING_TIME_24HR="time_24hr";
+
+  public static final String ACTION_END_BUTTON_BEHAVIOR="com.hlidskialf.android.shortcuts.action.END_BUTTON_BEHAVIOR";
+  public static final String ACTION_SET_FONT_SCALE="com.hlidskialf.android.shortcuts.action.SET_FONT_SCALE";
+  public static final String ACTION_SCREEN_BRIGHTNESS="com.hlidskialf.android.shortcuts.action.SCREEN_BRIGHTNESS";
+  public static final String ACTION_SCREEN_TIMEOUT="com.hlidskialf.android.shortcuts.action.SCREEN_TIMEOUT";
+
+  public static class System
+  {
+    public static String setting_name(String setting)
+    {
+      if (BuiltinShortcut.SETTING_AIRPLANE_MODE.equals(setting)) return Settings.System.AIRPLANE_MODE_ON;
+      if (BuiltinShortcut.SETTING_DEBUG_MODE.equals(setting)) return Settings.System.ADB_ENABLED;
+      if (BuiltinShortcut.SETTING_DEBUG_MODE.equals(setting)) return Settings.System.ADB_ENABLED;
+      if (BuiltinShortcut.SETTING_DATA_ROAMING.equals(setting)) return Settings.System.DATA_ROAMING;
+      if (BuiltinShortcut.SETTING_DIM_SCREEN.equals(setting)) return Settings.System.DIM_SCREEN;
+      if (BuiltinShortcut.SETTING_DTMF_TONE.equals(setting)) return Settings.System.DTMF_TONE_WHEN_DIALING;
+      if (BuiltinShortcut.SETTING_LOCK_PATTERN.equals(setting)) return Settings.System.LOCK_PATTERN_ENABLED;
+      if (BuiltinShortcut.SETTING_SHOW_PROCESSES.equals(setting)) return Settings.System.SHOW_PROCESSES;
+      if (BuiltinShortcut.SETTING_SOUND_EFFECTS.equals(setting)) return Settings.System.SOUND_EFFECTS_ENABLED;
+      if (BuiltinShortcut.SETTING_STAY_ON_WHILE_PLUGGED_IN.equals(setting)) return Settings.System.STAY_ON_WHILE_PLUGGED_IN;
+      if (BuiltinShortcut.SETTING_TIME_24HR.equals(setting)) return Settings.System.TIME_12_24;
+      return null;
+    }
+    public static void changeSetting(Context ctx, Intent intent)
+    {
+      android.util.Log.v("changeSetting", "WTF!!");
+      ContentResolver resolver = ctx.getContentResolver();
+      String setting = intent.getStringExtra(BuiltinShortcut.EXTRA_SETTING);
+      String key = BuiltinShortcut.System.setting_name(setting);
+      String state = intent.getStringExtra(BuiltinShortcut.EXTRA_VALUE);
+      boolean val = Settings.System.getInt(resolver, key, 1) == 1 ? true : false;
+      android.util.Log.v("changeSetting", setting +":"+key+"   "+String.valueOf( val ));
+      Settings.System.putInt(resolver, key, BuiltinShortcut.onoff_toggle(state, val) ? 1 : 0);
+    }
+  }
+
 
 }

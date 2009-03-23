@@ -13,11 +13,20 @@ public class Shortcuts extends Activity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
 
+/*
     Intent i = new Intent(BuiltinShortcut.ACTION_STREAM_VOLUME);
     i.putExtra(BuiltinShortcut.EXTRA_STREAM, BuiltinShortcut.STREAM_RING);
     i.putExtra(BuiltinShortcut.EXTRA_VOLUME, 10);
     i.putExtra(BuiltinShortcut.EXTRA_SHOW_UI, true);
     sendBroadcast(i);
+    */
+
+/*
+    Intent i = new Intent(BuiltinShortcut.ACTION_3G_ENABLE);
+    i.putExtra(BuiltinShortcut.EXTRA_ONOFF, "on");
+    sendBroadcast(i);
+    */
+    BuiltinShortcut.Mobile.enable3G(this,new Intent());
 
   }
 }

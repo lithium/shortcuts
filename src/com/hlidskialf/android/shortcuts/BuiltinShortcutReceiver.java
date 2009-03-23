@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 
+
 public class BuiltinShortcutReceiver extends BroadcastReceiver
 {
     public void onReceive(Context context, Intent intent)
@@ -27,5 +28,8 @@ public class BuiltinShortcutReceiver extends BroadcastReceiver
         else if (BuiltinShortcut.ACTION_WIFI_CONNECTION.equals(action)) BuiltinShortcut.Wifi.setConnection(wm,intent);
         else if (BuiltinShortcut.ACTION_WIFI_SCAN.equals(action)) BuiltinShortcut.Wifi.setConnection(wm,intent);
         else if (BuiltinShortcut.ACTION_GPS_ENABLE.equals(action)) BuiltinShortcut.Gps.enableProvider(context,intent);
+        else if (BuiltinShortcut.ACTION_3G_ENABLE.equals(action)) BuiltinShortcut.Mobile.enable3G(context,intent);
+        else if (BuiltinShortcut.ACTION_SYSTEM_SETTING.equals(action)) BuiltinShortcut.System.changeSetting(context,intent);
+
     }
 }

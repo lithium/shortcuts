@@ -4,10 +4,38 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="Hello World, Shortcuts"
-    />
+    <LinearLayout android:id="@+id/tab_scripts"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      >
+      <ListView android:id="@+id/list_scripts"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/tab_intents"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      >
+      <Button android:id="@+id/button_new_intent"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/new_intent"
+        />
+      <ListView android:id="@+id/list_intents"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        />
+    </LinearLayout>
+    <LinearLayout android:id="@+id/tab_filters"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      >
+      <ListView android:id="@+id/list_filters"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        />
+    </LinearLayout>
 </LinearLayout>
 

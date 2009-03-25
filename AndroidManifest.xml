@@ -17,6 +17,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".IntentWizard"/>
+
+
         <receiver android:name=".BuiltinShortcutReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="com.hlidskialf.android.shortcuts.action.VIBRATE"/>

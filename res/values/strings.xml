@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Shortcuts</string>
+    <string name="new_intent">Create New Intent</string>
 </resources>

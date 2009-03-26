@@ -242,12 +242,15 @@ public class IntentWizard extends Activity
     do_step(R.string.intent_uri, R.string.intent_uri_hint, new step_listener() {
       public void step(int title, int hint) { do_step_url(title, hint); }
       public void onComplete(String value) { 
-        mUriButton.setVisibility(View.GONE);
+        if (value.length() < 1) 
+          onCancel();
+        else
+          mUriButton.setVisibility(View.GONE);
       }
       public void onCancel() { 
+        mUriButton.setVisibility(View.VISIBLE);
         mStepItem.setAnimation( AnimationUtils.loadAnimation(IntentWizard.this, R.anim.wizard_item_out) );
         mListLayout.removeView(mStepItem);
-        mUriButton.setVisibility(View.VISIBLE);
       }
     });
   }
@@ -325,8 +328,6 @@ public class IntentWizard extends Activity
   }
   private void do_step_url(int title_res, int hint_res)
   {
-    mStepListener.onComplete(null);
-
     TextEntryDialog d = new TextEntryDialog(IntentWizard.this, title_res, hint_res, null);
     d.setTextEntryDialogListener(new TextEntryDialog.Listener() {
       public void onOk(TextEntryDialog d, String new_value) { 

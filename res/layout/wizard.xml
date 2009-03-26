@@ -26,15 +26,11 @@
         android:visibility="gone"
         />
   </LinearLayout>
-  <ScrollView
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
-      android:layout_above="@id/wizard_button_bar"
-      >
+
   <LinearLayout android:id="@+id/wizard_list" 
       android:orientation="vertical"
       android:layout_width="fill_parent"
       android:layout_height="fill_parent"
+      android:layout_above="@id/wizard_button_bar"
       />
-  </ScrollView>
 </RelativeLayout>

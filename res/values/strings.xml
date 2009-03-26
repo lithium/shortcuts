@@ -2,4 +2,15 @@
 <resources>
     <string name="app_name">Shortcuts</string>
     <string name="new_intent">Create New Intent</string>
+    <string name="intent_name">Name of Intent</string>
+    <string name="intent_name_hint">What will you name your new intent?</string>
+    <string name="intent_action">Action</string>
+    <string name="intent_action_hint">What action will the intent take?</string>
+    <string name="intent_uri">URI</string>
+    <string name="intent_uri_hint">Do you want a URI on this intent? (optional)</string>
+    <string name="intent_category">Category</string>
+    <string name="intent_category_hint">Do you want another Category on this intent?</string>
+    <string name="add_category">Add\nCategory</string>
+    <string name="add_extra">Add\nExtra</string>
+    <string name="add_uri">Add\nURI</string>
 </resources>

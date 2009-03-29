@@ -10,7 +10,15 @@
     <string name="intent_uri_hint">Do you want a URI on this intent? (optional)</string>
     <string name="intent_category">Category</string>
     <string name="intent_category_hint">Do you want another Category on this intent?</string>
-    <string name="add_category">Add\nCategory</string>
-    <string name="add_extra">Add\nExtra</string>
-    <string name="add_uri">Add\nURI</string>
+
+    <string name="add_category">Category</string>
+    <string name="add_extra">Extra</string>
+    <string name="add_component">Activity</string>
+    <string name="add_type">Type</string>
+    <string name="add_flags">Flags</string>
+    <string name="add_uri">URI</string>
+
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -24,6 +24,8 @@ import android.app.AlertDialog;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import java.lang.Runnable;
+
 import android.widget.GridView;
 
 class TextEntryDialog extends Dialog
@@ -73,86 +75,6 @@ class TextEntryDialog extends Dialog
   public void setTextEntryDialogListener(TextEntryDialog.Listener listener) { mListener = listener; }
 }
 
-class IconPicker extends Dialog
-{
-  private static final int[] RESOURCEIDS = {
-    17301534, 17301535, 17301536, 
-    17301537, 17301538, 17301539, 
-    17301540, 17301541, 17301542, 
-    17301543, 17301544, 17301545, 
-    17301546, 17301550, 17301597, 
-    17301598, 17301599, 17301614, 
-    17301615, 17301618, 17301619, 
-    17301620, 17301622, 17301623, 
-    17301624, 17301625, 17301626, 
-    17301627, 17301628, 17301629, 
-    17301630, 17301631, 17301632, 
-    17301633, 17301634, 17301635, 
-    17301636, 17301637, 17301638, 
-    17301639, 17301640, 17301641, 
-    17301642, 17301645, 17301646, 
-    17301647, 17301648, 17301649, 
-    17301650, 17301651, 17301555, 
-    17301556, 17301557, 17301558, 
-    17301559, 17301560, 17301561, 
-    17301562, 17301563, 17301564, 
-    17301565, 17301566, 17301567, 
-    17301568, 17301569, 17301570, 
-    17301571, 17301572, 17301573, 
-    17301574, 17301575, 17301576, 
-    17301577, 17301578, 17301579, 
-    17301580, 17301581, 17301582, 
-    17301583, 17301584, 17301585, 
-    17301586, 17301587, 17301588, 
-    17301589, 17301590, 17301591, 
-    17301592, 17301593, 17301594, 
-  };
-
-  private Context mContext;
-  private GridView mGrid;
-  private OnIconPickedListener mPickedListener;
-
-  static public interface OnIconPickedListener {
-    abstract public void onIconPicked(Drawable icon);
-  }
-
-  public IconPicker(Context ctx) {
-    super(ctx); 
-    mContext = ctx;
-    mGrid = new GridView(ctx);
-    mGrid.setNumColumns(3);
-    setContentView(mGrid);
-    setTitle("Pick an Icon");
-    mGrid.setAdapter( new BaseAdapter() {
-      public View getView(int pos, View convert, ViewGroup parent) {
-        ImageView i;
-        if (convert == null) {
-          i = new ImageView(mContext);
-          i.setScaleType(ImageView.ScaleType.FIT_CENTER);
-          i.setLayoutParams(new GridView.LayoutParams(48, 48));
-        }
-        else {
-          i = (ImageView) convert;
-        }
-        i.setImageResource(IconPicker.RESOURCEIDS[pos]);
-        return i;
-      }
-      public final int getCount() { return IconPicker.RESOURCEIDS.length; }
-      public final Object getItem(int pos) { return IconPicker.RESOURCEIDS[pos]; }
-      public final long getItemId(int pos) { return pos; }
-    });
-    mGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      public void onItemClick(AdapterView parent, View view, int pos, long id) {
-        if (mPickedListener != null) {
-          ImageView iv = (ImageView)view;
-          mPickedListener.onIconPicked(iv.getDrawable());
-        }
-        dismiss();
-      }
-    });
-  }
-  public void setOnIconPickedListener(IconPicker.OnIconPickedListener listener) { mPickedListener = listener; }
-}
 
 public class IntentWizard extends Activity
 {
@@ -168,7 +90,7 @@ public class IntentWizard extends Activity
   private TextView mStepItemValue;
   private ViewGroup mStepItem;
   private String[] builtin_actions,builtin_categories;
-  private Button mUriButton;
+  private Button mUriButton,mTypeButton,mOkButton;
 
   @Override
   public void onCreate(Bundle savedInstanceState)
@@ -191,13 +113,46 @@ public class IntentWizard extends Activity
     b.setText(R.string.add_extra);
     b.setVisibility(View.VISIBLE);
 
-    mUriButton = (Button)findViewById(R.id.wizard_button3);
+    b = (Button)findViewById(R.id.wizard_button3);
+    b.setText(R.string.add_component);
+    b.setVisibility(View.VISIBLE);
+
+    b = (Button)findViewById(R.id.wizard_button4);
+    b.setText(R.string.add_flags);
+    b.setVisibility(View.VISIBLE);
+
+    mUriButton = (Button)findViewById(R.id.wizard_button5);
     mUriButton.setText(R.string.add_uri);
+    mUriButton.setVisibility(View.VISIBLE);
     mUriButton.setOnClickListener(new Button.OnClickListener() {
       public void onClick(View v) {
         step_uri();
       }
     });
+    mTypeButton = (Button)findViewById(R.id.wizard_button6);
+    mTypeButton.setText(R.string.add_type);
+    mTypeButton.setVisibility(View.VISIBLE);
+    mTypeButton.setOnClickListener(new Button.OnClickListener() {
+      public void onClick(View v) {
+        //step_type();
+      }
+    });
+
+
+    
+    mOkButton = (Button)findViewById(R.id.wizard_button_ok);
+    mOkButton.setOnClickListener(new Button.OnClickListener() {
+      public void onClick(View v) {
+      }
+    });
+    b = (Button)findViewById(R.id.wizard_button_cancel);
+    b.setOnClickListener(new Button.OnClickListener() {
+      public void onClick(View v) { IntentWizard.this.finish(); }
+    });
+
+
+
+
 
     mInflater = getLayoutInflater();
     builtin_actions = getResources().getStringArray(R.array.builtin_actions);
@@ -216,9 +171,7 @@ public class IntentWizard extends Activity
           step_action(); 
       }
       public void onCancel() { 
-        mStepItem.setAnimation( AnimationUtils.loadAnimation(IntentWizard.this, R.anim.wizard_item_out) );
-        mListLayout.removeView(mStepItem);
-        step_name();
+        animate_item_out(new Runnable() { public void run() { step_name(); }});
       }
     });
   }
@@ -228,13 +181,13 @@ public class IntentWizard extends Activity
       public void onComplete(String value) { 
         if (value.length() < 1) 
           onCancel();
-        else
+        else {
+          mOkButton.setEnabled(true);
           step_uri(); 
+        }
       }
       public void onCancel() { 
-        mStepItem.setAnimation( AnimationUtils.loadAnimation(IntentWizard.this, R.anim.wizard_item_out) );
-        mListLayout.removeView(mStepItem);
-        step_action(); 
+        animate_item_out(new Runnable() { public void run() { step_action(); }});
       }
     });
   }
@@ -248,9 +201,8 @@ public class IntentWizard extends Activity
           mUriButton.setVisibility(View.GONE);
       }
       public void onCancel() { 
+        animate_item_out(null);
         mUriButton.setVisibility(View.VISIBLE);
-        mStepItem.setAnimation( AnimationUtils.loadAnimation(IntentWizard.this, R.anim.wizard_item_out) );
-        mListLayout.removeView(mStepItem);
       }
     });
   }
@@ -261,12 +213,10 @@ public class IntentWizard extends Activity
         if (value.length() < 1) 
           onCancel();
       }
-      public void onCancel() { 
-        mStepItem.setAnimation( AnimationUtils.loadAnimation(IntentWizard.this, R.anim.wizard_item_out) );
-        mListLayout.removeView(mStepItem);
-      }
+      public void onCancel() { animate_item_out(null); }
     });
   }
+
 
 
   private void do_step(int title_res, int hint_res, step_listener listener)
@@ -291,6 +241,20 @@ public class IntentWizard extends Activity
     });
     mStepItem.setAnimation(anim);
     mListLayout.addView(mStepItem);
+  }
+  private void animate_item_out(Runnable callback)
+  {
+    final Runnable cb = callback;
+    Animation anim = AnimationUtils.loadAnimation(this, R.anim.wizard_item_out);
+    anim.setAnimationListener(new Animation.AnimationListener() {
+      public void onAnimationEnd(Animation a) { 
+        mListLayout.removeView(mStepItem); 
+        if (cb != null) cb.run();
+      }
+      public void onAnimationRepeat(Animation a) {}
+      public void onAnimationStart(Animation a) {}
+    });
+    mStepItem.startAnimation(anim);
   }
 
   private void do_step_name(int title_res, int hint_res)
